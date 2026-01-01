@@ -10,6 +10,7 @@ from datetime import datetime
 from collections import defaultdict
 
 from .utils import get_results_dir, save_json, load_json
+from .visualizations import generate_all_figures
 
 
 def calculate_metrics(test_mode: bool = False) -> Dict[str, Any]:
@@ -195,6 +196,9 @@ def run_phase4(test_mode: bool = False) -> Dict[str, Any]:
     viz_file = get_results_dir() / "visualization_data.json"
     save_json(viz_data, str(viz_file))
     print(f"Visualization data saved to {viz_file}")
+    
+    # Generate figures
+    generate_all_figures(test_mode=test_mode)
     
     # Print summary
     print("\n" + "="*60)

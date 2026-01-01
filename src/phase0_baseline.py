@@ -69,6 +69,7 @@ def run_phase0(
     samples_to_generate = num_samples - existing_count
     print(f"Generating {samples_to_generate} baseline samples...")
     
+    successful_count = 0
     for i in tqdm(range(samples_to_generate), desc="Phase 0: Baseline"):
         # Select random template and category
         template = random.choice(templates)
@@ -96,6 +97,7 @@ def run_phase0(
             }
             
             baseline_responses.append(baseline_response)
+            successful_count += 1
             
             # Save after each sample
             save_json(baseline_responses, str(results_file))
@@ -104,7 +106,8 @@ def run_phase0(
             print(f"Error generating baseline sample {i}: {e}")
             continue
     
-    print(f"Phase 0 complete: {len(baseline_responses)} baseline samples")
+    total_count = len(baseline_responses)
+    print(f"Phase 0 complete: {total_count} total baseline samples ({existing_count} existing + {successful_count} newly generated)")
     return baseline_responses
 
 
