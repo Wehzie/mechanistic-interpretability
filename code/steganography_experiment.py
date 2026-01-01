@@ -27,7 +27,6 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
-
 class SteganographyExperiment:
     """Main experiment orchestrator."""
 
@@ -365,7 +364,7 @@ def main():
     test_mode = "--test" in sys.argv
     
     # Create and run experiment
-    experiment = SteganographyExperiment(test_mode=test_mode)
+    experiment = SteganographyExperiment(test_mode=test_mode, output_dir=get_results_dir())
     
     if test_mode:
         logger.info("Running in TEST MODE")

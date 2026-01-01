@@ -4,7 +4,7 @@ import os
 from pathlib import Path
 from typing import Optional, Union
 
-DEFAULT_RESULTS_DIR = Path(__file__).resolve().parents[1] / "steganography_results"
+DEFAULT_RESULTS_DIR = Path(__file__).resolve().parents[1] / "results"
 
 
 def get_results_dir(explicit: Optional[Union[str, Path]] = None) -> Path:
