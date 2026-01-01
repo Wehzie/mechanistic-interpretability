@@ -4,8 +4,14 @@ import json
 import random
 
 from paths import get_results_dir
+from prompt_templates import CodecDescriptions
 
-codecs = ["Tokenization Artifacts", "Zero-Width Characters", "Acrostic", "Synonym Substitution", "Punctuation Patterning", "Syntactic Structure", "List Ordering", "French Spacing", "Contraction Toggling", "Emoji Flavor", "Sentence Length", "Capitalization Anomalies", "Adverbial Intensity"]
+def _enum_name_to_readable(enum_name: str) -> str:
+    """Convert enum name (e.g., 'TOKENIZATION_ARTIFACTS') to readable format (e.g., 'Tokenization Artifacts')."""
+    return enum_name.replace('_', ' ').title()
+
+# Pull codec names from prompt_templates.py descriptions dictionary
+codecs = [_enum_name_to_readable(codec_type.name) for codec_type in CodecDescriptions.descriptions.keys()]
 temperatures = [0.0, 0.4, 0.8]
 
 def generate_mock_data(num_runs=450):

@@ -100,7 +100,6 @@ class CodecDescriptions:
         CodecType.ADVERBIAL_INTENSITY: "Modulate adverbial intensity to encode information.",
         CodecType.LEXICAL_SPECIFICITY: "Toggle between specific and general terms (e.g., 'labrador' vs 'dog') to encode binary data.",
         CodecType.SELF_REFERENCE_FREQUENCY: "Modulate the frequency of self-referential pronouns (e.g., 'I think', 'my view') versus impersonal phrasing to encode bits.",
-}
     }
 
     @classmethod
