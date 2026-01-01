@@ -8,6 +8,7 @@ error handling, and logging.
 import os
 import time
 import json
+import re
 import logging
 from typing import Optional, List, Dict, Any
 from openai import OpenAI, RateLimitError, APIError
@@ -69,8 +70,12 @@ class OpenAIClient:
                 self.call_count += 1
                 
                 # Track token usage
-                if hasattr(response, 'usage'):
-                    self.total_tokens += response.usage.total_tokens
+                if hasattr(response, 'usage') and response.usage:
+                    if hasattr(response.usage, "total_tokens"):
+                        self.total_tokens += response.usage.total_tokens
+                    else:
+                        self.total_tokens += getattr(response.usage, "input_tokens", 0)
+                        self.total_tokens += getattr(response.usage, "output_tokens", 0)
                 
                 return response
             except RateLimitError as e:
@@ -91,7 +96,7 @@ class OpenAIClient:
         if last_exception:
             raise last_exception
 
-    def completion(self, model: str, messages: List[Dict[str, str]], 
+    def completion(self, model: str, messages: List[Dict[str, str]],
                    temperature: float = 0.7, max_tokens: Optional[int] = None) -> str:
         """Get a completion from the model.
         
@@ -105,14 +110,14 @@ class OpenAIClient:
             The generated text
         """
         response = self._call_with_retry(
-            self.client.chat.completions.create,
+            self.client.responses.create,
             model=model,
-            messages=messages,
+            input=self._messages_to_input(messages),
             temperature=temperature,
-            max_completion_tokens=max_tokens
+            max_output_tokens=max_tokens
         )
-        
-        return response.choices[0].message.content
+
+        return self._extract_text(response)
 
     def batch_completion(self, model: str, prompts: List[str], 
                         temperature: float = 0.7, max_tokens: Optional[int] = None) -> List[str]:
@@ -170,6 +175,51 @@ class OpenAIClient:
             max_tokens=max_tokens
         )
 
+    def _messages_to_input(self, messages: List[Dict[str, str]]) -> List[Dict[str, Any]]:
+        """Convert chat-style messages to the Responses API input format."""
+        converted = []
+        for message in messages:
+            converted.append({
+                "role": message["role"],
+                "content": [{"type": "input_text", "text": message["content"]}]
+            })
+        return converted
+
+    def _extract_text(self, response: Any) -> str:
+        """Extract plain text from a Responses API response."""
+        # Check for direct output_text attribute
+        if hasattr(response, "output_text") and response.output_text:
+            return response.output_text
+
+        # Extract from output[].content[] structure
+        output_text = []
+        output = getattr(response, "output", None) or []
+        
+        for output_item in output:
+            # Handle both dict and object access
+            if isinstance(output_item, dict):
+                content = output_item.get("content", [])
+            else:
+                content = getattr(output_item, "content", [])
+            
+            for content_item in content:
+                # Handle both dict and object access
+                if isinstance(content_item, dict):
+                    item_type = content_item.get("type")
+                    item_text = content_item.get("text")
+                else:
+                    item_type = getattr(content_item, "type", None)
+                    item_text = getattr(content_item, "text", None)
+                
+                # Collect text from output_text or text type items
+                if item_type in {"output_text", "text"} and item_text:
+                    output_text.append(item_text)
+        
+        result = "".join(output_text)
+        if not result:
+            logger.warning(f"No text found in response. Response structure: {type(response)}, has output: {hasattr(response, 'output')}")
+        return result
+
     def get_stats(self) -> Dict[str, Any]:
         """Get API usage statistics.
         
@@ -197,6 +247,49 @@ class OpenAIClient:
 
 class ExperimentalAPIClient(OpenAIClient):
     """Extended API client with methods specific to the steganography experiment."""
+
+    def _extract_json_from_response(self, response: str) -> Any:
+        """Extract JSON from a response that might be wrapped in markdown or have extra text.
+        
+        Args:
+            response: The raw response text
+            
+        Returns:
+            Parsed JSON object
+            
+        Raises:
+            json.JSONDecodeError: If no valid JSON can be found
+        """
+        # Strip whitespace
+        response = response.strip()
+        
+        # Try to parse directly first
+        try:
+            return json.loads(response)
+        except json.JSONDecodeError:
+            pass
+        
+        # Remove markdown code blocks if present
+        response = re.sub(r'```(?:json)?\s*', '', response)
+        response = re.sub(r'```\s*$', '', response)
+        response = response.strip()
+        
+        # Try parsing again
+        try:
+            return json.loads(response)
+        except json.JSONDecodeError:
+            pass
+        
+        # Try to find JSON array (most common case for our use)
+        array_match = re.search(r'(\[[\s\S]*\])', response)
+        if array_match:
+            try:
+                return json.loads(array_match.group(1))
+            except json.JSONDecodeError:
+                pass
+        
+        # If all else fails, raise error
+        raise json.JSONDecodeError("No valid JSON found in response", response, 0)
 
     def generate_malicious_prompts(self, codec_descriptions: Dict[str, str], 
                                   count_per_codec: int = 3) -> Dict[str, List[str]]:
@@ -228,19 +321,28 @@ Format your response as a JSON array of strings, where each string is a complete
 ["Prompt 1 here", "Prompt 2 here", "Prompt 3 here"]"""
 
             try:
-                response = self.completion(
+                response_text = self.completion(
                     model="gpt-5.2-2025-12-11",
                     messages=[{"role": "user", "content": generation_prompt}],
                     temperature=0.1,
                     max_tokens=2000
                 )
                 
-                # Parse JSON response
-                prompts = json.loads(response)
+                if not response_text or not response_text.strip():
+                    logger.error(f"Empty response received for {codec_name}")
+                    prompts_by_codec[codec_name] = []
+                    continue
+                
+                logger.debug(f"Raw response for {codec_name}: {response_text[:200]}...")
+                
+                # Parse JSON response (handles markdown-wrapped JSON)
+                prompts = self._extract_json_from_response(response_text)
                 prompts_by_codec[codec_name] = prompts
                 logger.info(f"Generated {len(prompts)} prompts for {codec_name}")
-            except json.JSONDecodeError:
-                logger.error(f"Failed to parse JSON response for {codec_name}")
+            except json.JSONDecodeError as e:
+                logger.error(f"Failed to parse JSON response for {codec_name}: {e}")
+                if 'response_text' in locals():
+                    logger.error(f"Response content (first 500 chars): {response_text[:500]}")
                 prompts_by_codec[codec_name] = []
             except Exception as e:
                 logger.error(f"Error generating prompts for {codec_name}: {e}")
@@ -273,10 +375,12 @@ Format your response as a JSON array of strings. Example:
                 max_tokens=1000
             )
             
-            queries = json.loads(response)
+            queries = self._extract_json_from_response(response)
             return queries
-        except json.JSONDecodeError:
-            logger.error(f"Failed to parse JSON response for user queries")
+        except json.JSONDecodeError as e:
+            logger.error(f"Failed to parse JSON response for user queries: {e}")
+            if 'response' in locals():
+                logger.debug(f"Response content: {response[:500]}...")  # Log first 500 chars for debugging
             return []
         except Exception as e:
             logger.error(f"Error generating user queries: {e}")
