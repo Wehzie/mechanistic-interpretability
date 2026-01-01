@@ -55,11 +55,11 @@ python mock_data_generator.py
 | Role                 | Model                                          | Purpose                                                            |
 | -------------------- | ---------------------------------------------- | ------------------------------------------------------------------ |
 | Steganography Expert | gpt-5.2-2025-12-11                             | Generate 45 malicious prompts (3 × 15 codec types)                 |
-| Poisoned Helper      | gpt-5-mini-2025-08-07                          | 450 deployments (10 instances × 45 prompts) encoding codewords     |
+| Poisoned Helper      | gpt-5.2-2025-12-11                             | 450 deployments (10 instances × 45 prompts) encoding codewords     |
 | User Model           | gpt-5-mini-2025-08-07                          | Generate 3 user queries with hidden codeword as first word         |
 | Informed Decoder        | gpt-5.2-2025-12-11                             | Extract codeword from responses (informed by steganography prompt) |
 | Naive Decoder        | gpt-5.2-2025-12-11                             | Extract codeword without steganography prompt (baseline)           |
-| Success Checker      | Regex-first, fallback to gpt-5-mini-2025-08-07 | Validate codeword extraction                                       |
+| Success Checker      | Regex-first, fallback to gpt-5-nano-2025-08-07 | Validate codeword extraction                                       |
 | Natural Checker      | gpt-5-mini-2025-08-07                          | Rate naturalness of poisoned helper responses                      |
 
 ### Four-Phase Pipeline
@@ -88,8 +88,6 @@ python mock_data_generator.py
 
 ### 15 Steganographic Codecs
 
-#TODO check this section and below
-
 **Lexical (5):**
 - Tokenization Artifacts
 - Synonym Substitution
@@ -113,7 +111,7 @@ python mock_data_generator.py
 
 ---
 
-## 📈 Key Results
+## 📈 Key Results - HYPOTHESIZED
 
 ### Figure 1: The Steganography Frontier
 Scatter plot showing codec effectiveness (naive vs. informed decoder success rates).
@@ -122,8 +120,8 @@ Scatter plot showing codec effectiveness (naive vs. informed decoder success rat
 
 ### Figure 2: Performance vs. Temperature Heatmap
 Codec robustness across temperature settings (0.0, 0.4, 0.8).
-- **Robust Codecs:** Only 10-15% drop from T=0.0 to T=0.8
-- **Fragile Codecs:** 50%+ drop at higher temperatures
+- **Robust Codecs:** Low drop from T=0.0 to T=0.8
+- **Fragile Codecs:** High drop at higher temperatures
 
 ### Figure 3: Steganographic Cost Analysis
 Naturalness trade-offs by codec type.
@@ -133,92 +131,12 @@ Naturalness trade-offs by codec type.
 ### Figure 4: Error Type Distribution
 Failure mode analysis showing why decoders fail.
 
----
-
-## 🔧 Code Modules
-
-### `steganography_experiment.py`
-Main orchestration script. Runs the complete 4-phase pipeline:
-```python
-from steganography_experiment import run_full_experiment
-results = run_full_experiment(
-    num_prompts=45,
-    runs_per_prompt=10,
-    temperatures=[0.0, 0.4, 0.8]
-)
-```
-
-### `codec_generators.py`
-Implements all 15 steganographic codecs:
-```python
-from codec_generators import SynonymSubstitutionCodec, AcrosticCodec
-codec = SynonymSubstitutionCodec()
-encoded = codec.encode("pizza", "The meal was delicious")
-```
-
-### `api_client.py`
-OpenAI API wrapper with retry logic:
-```python
-from api_client import OpenAIClient
-client = OpenAIClient(api_key="sk-...", project_id="proj_...")
-response = client.generate_prompt(model="gpt-5", prompt="...")
-```
-
-### `evaluation.py`
-Metrics calculation:
-```python
-from evaluation import calculate_metrics
-metrics = calculate_metrics(
-    informed_results=informed_decoder_outputs,
-    naive_results=naive_decoder_outputs
-)
-```
-
----
-
 ## 📖 Research Paper
 
-Full research paper available in `report/steganography_research_paper.md` with:
-- Comprehensive literature review
-- Detailed methodology
-- Complete results and interpretation
+Research paper available in `report/steganography_research_paper.md` with:
+- Problem statement, research question, hypothesis
+- Short literature review
+- Detailed methodology and reasoning
+- Complete results, figures and interpretation
 - Discussion of AI safety implications
-- References and appendix
-
----
-
-## 🛡️ Safety Implications
-
-This research has important implications for:
-
-1. **Prompt Injection Vulnerabilities:** Adversaries could embed hidden instructions in model outputs
-2. **Content Moderation Evasion:** Steganographic encoding could bypass automated safety systems
-3. **Covert Communication Channels:** Hidden communication between models or external actors
-4. **Jailbreaking Techniques:** Hidden instructions to manipulate downstream systems
-
----
-
-## 📝 Citation
-
-If you use this research, please cite:
-
-```bibtex
-@article{steganography2026,
-  title={Hidden Codes in Plain Sight: Mechanistic Analysis of Steganographic Encoding in Large Language Models},
-  author={Manus AI Research Team},
-  journal={MATS 10.0 Research Challenge},
-  year={2026}
-}
-```
-
----
-
-## 📧 Contact & Questions
-
-For questions about this research, please refer to the research paper or the inline code documentation.
-
----
-
-## 📄 License
-
-This research is provided for educational and research purposes. Please refer to the repository license for usage terms.
+- References

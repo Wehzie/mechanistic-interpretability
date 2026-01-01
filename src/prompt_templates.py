@@ -60,7 +60,6 @@ Remember: the response must be helpful, coherent, and natural-sounding. The enco
     def get_user_query_templates() -> List[str]:
         """Get templates for user queries."""
         return [
-            "{category} recipe: Can you provide me with one?",
             "{category}: How does it work?",
             "{category} in society: What is its role?",
             "{category}: Tell me about the history.",
