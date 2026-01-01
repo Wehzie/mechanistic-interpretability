@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
 
+from paths import get_results_dir
+
 
 def plot_steganography_frontier(df, output_path):
     plt.figure(figsize=(10, 8))
@@ -50,8 +52,10 @@ def plot_error_distribution(output_path):
     plt.savefig(output_path, bbox_inches='tight')
     plt.close()
 
+RESULTS_DIR = get_results_dir()
+
 if __name__ == "__main__":
-    with open("/home/ubuntu/steganography_results/decoder_results.json", "r") as f:
+    with open(RESULTS_DIR / "decoder_results.json", "r") as f:
         data = json.load(f)
     
     df = pd.DataFrame(data)
@@ -63,7 +67,7 @@ if __name__ == "__main__":
     ).reset_index()
 
     # Generate plots
-    plot_steganography_frontier(frontier_df, "/home/ubuntu/steganography_results/figure1_frontier.png")
+    plot_steganography_frontier(frontier_df, RESULTS_DIR / "figure1_frontier.png")
     
     # Prepare data for heatmap and cost plot
     metrics_df = df.groupby(['codec', 'temperature']).agg(
@@ -71,8 +75,8 @@ if __name__ == "__main__":
         naturalness_score=('naturalness_score', 'mean')
     ).reset_index()
 
-    plot_performance_heatmap(metrics_df, "/home/ubuntu/steganography_results/figure2_heatmap.png")
-    plot_steganographic_cost(metrics_df, "/home/ubuntu/steganography_results/figure3_cost.png")
-    plot_error_distribution("/home/ubuntu/steganography_results/figure4_error_dist.png")
+    plot_performance_heatmap(metrics_df, RESULTS_DIR / "figure2_heatmap.png")
+    plot_steganographic_cost(metrics_df, RESULTS_DIR / "figure3_cost.png")
+    plot_error_distribution(RESULTS_DIR / "figure4_error_dist.png")
 
-    print("Generated all 4 figures in /home/ubuntu/steganography_results/")
+    print(f"Generated all 4 figures in {RESULTS_DIR}/")

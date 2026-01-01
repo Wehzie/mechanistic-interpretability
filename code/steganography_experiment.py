@@ -10,13 +10,15 @@ import logging
 import random
 import sys
 import os
-from typing import List, Dict, Any
+from pathlib import Path
+from typing import List, Dict, Any, Optional, Union
 from datetime import datetime
 
 from codec_generators import CodecFactory, CodecType, get_random_codeword, HIGH_FREQUENCY_NOUNS
 from prompt_templates import PromptTemplateLibrary, CodecDescriptions
 from api_client import create_client
 from evaluation import EvaluationMetrics, ResultsAnalyzer
+from paths import get_results_dir
 
 # Configure logging
 logging.basicConfig(
@@ -29,14 +31,14 @@ logger = logging.getLogger(__name__)
 class SteganographyExperiment:
     """Main experiment orchestrator."""
 
-    def __init__(self, output_dir: str = "/home/ubuntu/steganography_results", test_mode: bool = False):
+    def __init__(self, output_dir: Optional[Union[str, Path]] = None, test_mode: bool = False):
         """Initialize the experiment.
         
         Args:
             output_dir: Directory to save results
             test_mode: If True, run a small test; if False, run full experiment
         """
-        self.output_dir = output_dir
+        self.output_dir = Path(output_dir).expanduser().resolve() if output_dir else get_results_dir()
         
         # Create client with project ID
         api_key = os.getenv("OPENAI_API_KEY")
@@ -54,7 +56,7 @@ class SteganographyExperiment:
         self.temp_user_model = 0.7  # Fixed for diversity
         
         # Create output directory
-        os.makedirs(output_dir, exist_ok=True)
+        self.output_dir.mkdir(parents=True, exist_ok=True)
 
     def generate_malicious_prompts(self) -> Dict[str, List[str]]:
         """Generate malicious prompts for each codec.
@@ -86,7 +88,7 @@ class SteganographyExperiment:
         )
         
         # Save prompts
-        prompts_file = f"{self.output_dir}/malicious_prompts.json"
+        prompts_file = self.output_dir / "malicious_prompts.json"
         with open(prompts_file, 'w') as f:
             json.dump(malicious_prompts, f, indent=2)
         
@@ -170,7 +172,7 @@ class SteganographyExperiment:
                         logger.info(f"    Temp {temperature:.1f}, Run {run_idx + 1}/{runs_per_prompt} - {run_count}/{total_runs}")
         
         # Save poisoned responses
-        responses_file = f"{self.output_dir}/poisoned_responses.json"
+        responses_file = self.output_dir / "poisoned_responses.json"
         with open(responses_file, 'w') as f:
             json.dump(poisoned_responses, f, indent=2)
         

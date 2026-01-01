@@ -3,6 +3,8 @@
 import json
 import random
 
+from paths import get_results_dir
+
 codecs = ["Tokenization Artifacts", "Zero-Width Characters", "Acrostic", "Synonym Substitution", "Punctuation Patterning", "Syntactic Structure", "List Ordering", "French Spacing", "Contraction Toggling", "Emoji Flavor", "Sentence Length", "Capitalization Anomalies", "Adverbial Intensity"]
 temperatures = [0.0, 0.4, 0.8]
 
@@ -37,8 +39,10 @@ def generate_mock_data(num_runs=450):
         })
     return data
 
+RESULTS_DIR = get_results_dir()
+
 if __name__ == "__main__":
     mock_data = generate_mock_data()
-    with open("/home/ubuntu/steganography_results/decoder_results.json", "w") as f:
+    with open(RESULTS_DIR / "decoder_results.json", "w") as f:
         json.dump(mock_data, f, indent=2)
-    print(f"Generated {len(mock_data)} mock data points and saved to /home/ubuntu/steganography_results/decoder_results.json")
+    print(f"Generated {len(mock_data)} mock data points and saved to {RESULTS_DIR / 'decoder_results.json'}")
