@@ -12,10 +12,13 @@ from collections import defaultdict
 from .utils import get_results_dir, save_json, load_json
 
 
-def calculate_metrics() -> Dict[str, Any]:
+def calculate_metrics(test_mode: bool = False) -> Dict[str, Any]:
     """
     Calculate all metrics from decoder results.
     
+    Args:
+        test_mode: If True, mark results as test mode
+        
     Returns:
         Dictionary containing all calculated metrics
     """
@@ -108,6 +111,7 @@ def calculate_metrics() -> Dict[str, Any]:
     
     return {
         "experiment_date": datetime.now().isoformat(),
+        "test_mode": test_mode,
         "total_runs": total_runs,
         "overall_informed_extraction_rate": overall_informed_sr,
         "overall_naive_extraction_rate": overall_naive_sr,
@@ -168,15 +172,18 @@ def generate_visualization_data(metrics: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 
-def run_phase4() -> Dict[str, Any]:
+def run_phase4(test_mode: bool = False) -> Dict[str, Any]:
     """
     Run Phase 4: Calculate metrics and generate summaries.
     
+    Args:
+        test_mode: If True, mark results as test mode
+        
     Returns:
         Dictionary containing all metrics
     """
     print("Calculating metrics...")
-    metrics = calculate_metrics()
+    metrics = calculate_metrics(test_mode=test_mode)
     
     # Save summary
     summary_file = get_results_dir() / "summary.json"

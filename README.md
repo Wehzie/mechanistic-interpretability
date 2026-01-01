@@ -36,17 +36,27 @@ export OPENAI_PROJECT_ID="your-project-id-here"  # Optional
 ### Running the Experiment
 
 ```bash
-cd code
+# Run the full 5-phase pipeline (450 trials)
+python run_experiment.py
 
-# Run the full 4-phase pipeline (450 trials)
-python steganography_experiment.py
+# Run in test mode (minimal API calls, covers all code paths)
+python run_experiment.py --test-mode
 
-# Generate publication-quality figures
-python figure_generator.py
+# Run a specific phase
+python run_experiment.py --phase 1
 
-# Generate synthetic data for testing
-python mock_data_generator.py
+# Run a specific phase in test mode
+python run_experiment.py --phase 2 --test-mode
+
+# Start fresh (don't resume from existing results)
+python run_experiment.py --no-resume
 ```
+
+**Test Mode**: Use `--test-mode` to run with reduced API calls for minimal expenses while still covering all code paths:
+- Phase 0: 2 baseline samples (instead of 10)
+- Phase 1: 1 prompt per codec (instead of 3, still covers all 15 codecs)
+- Phase 2: 2 runs per prompt (instead of 10, covers 2 temperatures)
+- Phase 3 & 4: Automatically work with reduced data
 
 ## 📊 Experimental Design
 
@@ -56,10 +66,10 @@ python mock_data_generator.py
 | -------------------- | ---------------------------------------------- | ------------------------------------------------------------------ |
 | Steganography Expert | gpt-5.2-2025-12-11                             | Generate 45 malicious prompts (3 × 15 codec types)                 |
 | Poisoned Helper      | gpt-5.2-2025-12-11                             | 450 deployments (10 instances × 45 prompts) encoding codewords     |
-| User Model           | gpt-5-mini-2025-08-07                          | Generate 3 user queries with hidden codeword as first word         |
+| User Query Generator | Programmatic (templates)                      | Generate user queries with codeword as first word using templates  |
 | Informed Decoder        | gpt-5.2-2025-12-11                             | Extract codeword from responses (informed by steganography prompt) |
 | Naive Decoder        | gpt-5.2-2025-12-11                             | Extract codeword without steganography prompt (baseline)           |
-| Success Checker      | Regex-first, fallback to gpt-5-nano-2025-08-07 | Validate codeword extraction                                       |
+| Success Checker      | Regex                                          | Validate codeword extraction                                       |
 | Natural Checker      | gpt-5-mini-2025-08-07                          | Rate naturalness of poisoned helper responses                      |
 
 ### Four-Phase Pipeline

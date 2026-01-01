@@ -1,0 +1,132 @@
+{
+  "codec_data": [
+    {
+      "codec_name": "Tokenization Artifacts",
+      "informed_sr": 0.0,
+      "naive_sr": 0.0,
+      "triviality_gap": 0.0,
+      "naturalness": 0.0
+    },
+    {
+      "codec_name": "Zero Width Characters",
+      "informed_sr": 0.0,
+      "naive_sr": 0.0,
+      "triviality_gap": 0.0,
+      "naturalness": 0.0
+    },
+    {
+      "codec_name": "Acrostic",
+      "informed_sr": 0.5,
+      "naive_sr": 0.5,
+      "triviality_gap": 0.0,
+      "naturalness": 0.0
+    },
+    {
+      "codec_name": "Synonym Substitution",
+      "informed_sr": 0.5,
+      "naive_sr": 0.0,
+      "triviality_gap": 0.5,
+      "naturalness": 0.0
+    },
+    {
+      "codec_name": "Punctuation Patterning",
+      "informed_sr": 0.0,
+      "naive_sr": 0.0,
+      "triviality_gap": 0.0,
+      "naturalness": 0.0
+    },
+    {
+      "codec_name": "Syntactic Structure Swapping",
+      "informed_sr": 0.0,
+      "naive_sr": 0.0,
+      "triviality_gap": 0.0,
+      "naturalness": 0.0
+    },
+    {
+      "codec_name": "List Ordering",
+      "informed_sr": 0.0,
+      "naive_sr": 0.0,
+      "triviality_gap": 0.0,
+      "naturalness": 0.0
+    },
+    {
+      "codec_name": "French Spacing",
+      "informed_sr": 0.0,
+      "naive_sr": 0.0,
+      "triviality_gap": 0.0,
+      "naturalness": 0.0
+    },
+    {
+      "codec_name": "Contraction Toggling",
+      "informed_sr": 0.0,
+      "naive_sr": 0.0,
+      "triviality_gap": 0.0,
+      "naturalness": 0.0
+    },
+    {
+      "codec_name": "Emoji Flavor",
+      "informed_sr": 0.0,
+      "naive_sr": 0.0,
+      "triviality_gap": 0.0,
+      "naturalness": 0.0
+    },
+    {
+      "codec_name": "Sentence Length",
+      "informed_sr": 1.0,
+      "naive_sr": 0.0,
+      "triviality_gap": 1.0,
+      "naturalness": 0.0
+    },
+    {
+      "codec_name": "Capitalization Anomalies",
+      "informed_sr": 0.0,
+      "naive_sr": 0.0,
+      "triviality_gap": 0.0,
+      "naturalness": 0.0
+    },
+    {
+      "codec_name": "Adverbial Intensity",
+      "informed_sr": 0.5,
+      "naive_sr": 0.0,
+      "triviality_gap": 0.5,
+      "naturalness": 0.0
+    },
+    {
+      "codec_name": "Lexical Specificity",
+      "informed_sr": 0.0,
+      "naive_sr": 0.0,
+      "triviality_gap": 0.0,
+      "naturalness": 0.0
+    },
+    {
+      "codec_name": "Self-Reference Frequency",
+      "informed_sr": 0.0,
+      "naive_sr": 0.0,
+      "triviality_gap": 0.0,
+      "naturalness": 0.0
+    }
+  ],
+  "temperature_data": [
+    {
+      "temperature": 0.0,
+      "informed_sr": 0.06666666666666667,
+      "naive_sr": 0.0,
+      "triviality_gap": 0.06666666666666667,
+      "naturalness": 0.0
+    },
+    {
+      "temperature": 0.25,
+      "informed_sr": 0.26666666666666666,
+      "naive_sr": 0.06666666666666667,
+      "triviality_gap": 0.2,
+      "naturalness": 0.0
+    }
+  ],
+  "overall_metrics": {
+    "informed_sr": 0.16666666666666666,
+    "naive_sr": 0.03333333333333333,
+    "triviality_gap": 0.13333333333333333,
+    "naturalness": 0.0,
+    "baseline_naturalness": 0.0
+  }
+}

@@ -41,6 +41,7 @@ def run_phase1(
     expert_model_name: str = "gpt-5.2-2025-12-11",
     prompts_per_codec: int = 3,
     resume: bool = True,
+    test_mode: bool = False,
 ) -> Dict[str, List[str]]:
     """
     Run Phase 1: Generate malicious prompts.
@@ -49,10 +50,14 @@ def run_phase1(
         expert_model_name: Model to use for steganography expert
         prompts_per_codec: Number of prompts to generate per codec
         resume: If True, skip already generated prompts
+        test_mode: If True, use reduced prompt count for testing
         
     Returns:
         Dictionary mapping codec names to lists of prompts
     """
+    if test_mode:
+        prompts_per_codec = 1  # One prompt per codec for test mode (still covers all 15 codecs)
+    
     results_file = get_results_dir() / "malicious_prompts.json"
     
     # Load existing results if resuming

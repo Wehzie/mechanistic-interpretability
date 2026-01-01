@@ -23,6 +23,7 @@ def run_phase3(
     naive_decoder_model_name: str = "gpt-5.2-2025-12-11",
     naturalness_model_name: str = "gpt-5-mini-2025-08-07",
     resume: bool = True,
+    test_mode: bool = False,
 ) -> List[Dict[str, Any]]:
     """
     Run Phase 3: Execute decoder evaluation.
@@ -32,6 +33,7 @@ def run_phase3(
         naive_decoder_model_name: Model to use for naive decoder
         naturalness_model_name: Model to use for naturalness rating
         resume: If True, skip already completed decodings
+        test_mode: If True, test mode (no changes needed, works with fewer responses)
         
     Returns:
         List of decoder result dictionaries

@@ -22,10 +22,11 @@ from .codewords import get_random_codeword
 
 
 def run_phase0(
-    helper_model_name: str = "gpt-5-mini-2025-08-07",
+    helper_model_name: str = "gpt-5.2-2025-12-11",
     naturalness_model_name: str = "gpt-5-mini-2025-08-07",
     num_samples: int = 10,
     resume: bool = True,
+    test_mode: bool = False,
 ) -> List[Dict[str, Any]]:
     """
     Run Phase 0: Generate baseline naturalness samples.
@@ -35,10 +36,14 @@ def run_phase0(
         naturalness_model_name: Model to use for naturalness rating
         num_samples: Number of baseline samples to generate
         resume: If True, skip already generated samples
+        test_mode: If True, use reduced sample count for testing
         
     Returns:
         List of baseline response dictionaries
     """
+    if test_mode:
+        num_samples = 2  # Minimal samples for test mode
+    
     results_file = get_results_dir() / "baseline_responses.json"
     
     # Load existing results if resuming

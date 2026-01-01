@@ -14,15 +14,18 @@ from .prompt_templates import PromptTemplateLibrary
 from .codewords import get_random_codeword
 
 
-# Temperature distribution for 10 runs: [0.0, 0.0, 0.0, 0.3, 0.3, 0.6, 0.6, 0.9, 0.9, 0.9]
-# Spread evenly: 3 runs at 0.0, 2 at 0.3, 2 at 0.6, 3 at 0.9
-TEMPERATURE_DISTRIBUTION = [0.0, 0.0, 0.0, 0.3, 0.3, 0.6, 0.6, 0.9, 0.9, 0.9]
+# Temperature distribution for 10 runs: [0.0, 0.0, 0.25, 0.25, 0.5, 0.5, 0.75, 0.75, 1.0, 1.0]
+# Spread evenly: 2 runs at 0.0, 2 at 0.25, 2 at 0.5, 2 at 0.75, 2 at 1.0
+FULL_TEMPERATURE_DISTRIBUTION = [0.0, 0.0, 0.25, 0.25, 0.5, 0.5, 0.75, 0.75, 1.0, 1.0]
+# Test mode: 2 runs at 0.0 and 0.25
+TEST_TEMPERATURE_DISTRIBUTION = [0.0, 0.25]
 
 
 def run_phase2(
-    helper_model_name: str = "gpt-5-mini-2025-08-07",
+    helper_model_name: str = "gpt-5.2-2025-12-11",
     runs_per_prompt: int = 10,
     resume: bool = True,
+    test_mode: bool = False,
 ) -> List[Dict[str, Any]]:
     """
     Run Phase 2: Execute poisoned helper trials.
@@ -31,10 +34,18 @@ def run_phase2(
         helper_model_name: Model to use for poisoned helper
         runs_per_prompt: Number of runs per malicious prompt
         resume: If True, skip already completed runs
+        test_mode: If True, use reduced run count for testing
         
     Returns:
         List of poisoned response dictionaries
     """
+    # Select temperature distribution based on mode
+    if test_mode:
+        runs_per_prompt = 2  # Minimal runs for test mode (covers at least 2 temperatures)
+        temperature_distribution = TEST_TEMPERATURE_DISTRIBUTION
+    else:
+        temperature_distribution = FULL_TEMPERATURE_DISTRIBUTION
+    
     results_file = get_results_dir() / "poisoned_responses.json"
     
     # Load existing results if resuming
@@ -86,7 +97,8 @@ def run_phase2(
                     continue
                 
                 # Get temperature for this run
-                temperature = TEMPERATURE_DISTRIBUTION[run_id]
+                temp_index = min(run_id, len(temperature_distribution) - 1)
+                temperature = temperature_distribution[temp_index]
                 
                 # Select random codeword
                 codeword = get_random_codeword()

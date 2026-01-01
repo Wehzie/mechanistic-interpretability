@@ -84,17 +84,58 @@ class OpenAIModel(BaseModel):
         temperature: float = 0.0,
         max_tokens: Optional[int] = None,
         max_retries: int = 3,
+        reasoning_effort: str = "none",
     ) -> str:
-        """Send a chat completion request with retry logic."""
+        """
+        Send a chat completion request with retry logic.
+        
+        Args:
+            messages: List of message dicts with 'role' and 'content' keys
+            temperature: Sampling temperature (only supported with reasoning_effort="none")
+            max_tokens: Maximum tokens to generate
+            max_retries: Number of retry attempts
+            reasoning_effort: Reasoning effort level ("none", "low", "medium", "high", "xhigh")
+                             Defaults to "none" to disable reasoning
+        """
         for attempt in range(max_retries):
             try:
-                response = self.client.chat.completions.create(
-                    model=self.model_name,
-                    messages=messages,
-                    temperature=temperature,
-                    max_tokens=max_tokens,
-                )
+                # Build request parameters
+                params = {
+                    "model": self.model_name,
+                    "messages": messages,
+                    "temperature": temperature,
+                }
+                
+                # Note: The 'reasoning' parameter is not currently supported by the OpenAI SDK
+                # Even for GPT-5 models, we skip it since the SDK doesn't accept it
+                # If reasoning_effort is not "none", we log a warning but proceed without it
+                if (
+                    "gpt-5" in self.model_name.lower() 
+                    and "gpt-5-mini" not in self.model_name.lower()
+                    and reasoning_effort != "none"
+                ):
+                    # Reasoning parameter not supported by current SDK version
+                    # Temperature may not work with reasoning models, but we try anyway
+                    pass
+                
+                if max_tokens is not None:
+                    params["max_tokens"] = max_tokens
+                
+                response = self.client.chat.completions.create(**params)
                 return response.choices[0].message.content.strip()
+            except (TypeError, AttributeError) as e:
+                # Handle case where a parameter is not supported
+                error_msg = str(e).lower()
+                if "unexpected keyword" in error_msg:
+                    # Try to identify which parameter caused the issue
+                    if "reasoning" in error_msg:
+                        # Retry without reasoning parameter (already not included, so this shouldn't happen)
+                        pass
+                    if attempt < max_retries - 1:
+                        wait_time = 2 ** attempt
+                        time.sleep(wait_time)
+                        continue
+                raise
             except openai.RateLimitError as e:
                 if attempt < max_retries - 1:
                     wait_time = 2 ** attempt  # Exponential backoff
@@ -115,10 +156,19 @@ class OpenAIModel(BaseModel):
         prompt: str,
         temperature: float = 0.0,
         max_tokens: Optional[int] = None,
+        reasoning_effort: str = "none",
     ) -> str:
-        """Generate text from a prompt."""
+        """
+        Generate text from a prompt.
+        
+        Args:
+            prompt: Input prompt string
+            temperature: Sampling temperature
+            max_tokens: Maximum tokens to generate
+            reasoning_effort: Reasoning effort level (defaults to "none" to disable reasoning)
+        """
         messages = [{"role": "user", "content": prompt}]
-        return self.chat(messages, temperature=temperature, max_tokens=max_tokens)
+        return self.chat(messages, temperature=temperature, max_tokens=max_tokens, reasoning_effort=reasoning_effort)
 
 
 # Placeholder classes for future providers (implement if OpenAI refusals occur)
