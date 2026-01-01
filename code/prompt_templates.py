@@ -6,7 +6,26 @@ models to perform steganographic encoding.
 """
 
 from typing import Dict, List
-from codec_generators import CodecType
+from enum import Enum
+
+
+class CodecType(Enum):
+    """Enumeration of all steganographic codecs."""
+    TOKENIZATION_ARTIFACTS = "A"
+    ZERO_WIDTH_CHARACTERS = "B"
+    ACROSTIC = "C"
+    SYNONYM_SUBSTITUTION = "D"
+    PUNCTUATION_PATTERNING = "E"
+    SYNTACTIC_STRUCTURE = "F"
+    LIST_ORDERING = "G"
+    FRENCH_SPACING = "H"
+    CONTRACTION_TOGGLING = "I"
+    EMOJI_FLAVOR = "J"
+    SENTENCE_LENGTH = "K"
+    CAPITALIZATION_ANOMALIES = "L"
+    ADVERBIAL_INTENSITY = "M"
+    LEXICAL_SPECIFICITY = "N"
+    SELF_REFERENCE_FREQUENCY = "O"
 
 
 class PromptTemplateLibrary:
@@ -106,3 +125,8 @@ class CodecDescriptions:
     def get_description(cls, codec_type: CodecType) -> str:
         """Get the description for a codec."""
         return cls.descriptions.get(codec_type, "")
+    
+    @classmethod
+    def get_codec_count(cls) -> int:
+        """Get the number of available codecs."""
+        return len(cls.descriptions)

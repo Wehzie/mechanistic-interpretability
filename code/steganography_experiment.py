@@ -14,8 +14,8 @@ from pathlib import Path
 from typing import List, Dict, Any, Optional, Union
 from datetime import datetime
 
-from codec_generators import CodecFactory, CodecType, get_random_codeword, HIGH_FREQUENCY_NOUNS
-from prompt_templates import PromptTemplateLibrary, CodecDescriptions
+from codec_generators import get_random_codeword, HIGH_FREQUENCY_NOUNS
+from prompt_templates import PromptTemplateLibrary, CodecDescriptions, CodecType
 from api_client import create_client
 from evaluation import EvaluationMetrics, ResultsAnalyzer
 from paths import get_results_dir
@@ -45,7 +45,7 @@ class SteganographyExperiment:
         self.client = create_client(api_key=api_key, project_id=project_id)
         
         self.results = []
-        self.codec_count = CodecFactory.get_codec_count()
+        self.codec_count = CodecDescriptions.get_codec_count()
         self.test_mode = test_mode
         
         # Temperature settings
