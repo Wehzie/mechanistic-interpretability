@@ -90,16 +90,18 @@ python mock_data_generator.py
 
 #TODO check this section and below
 
-**Lexical (4):**
+**Lexical (5):**
 - Tokenization Artifacts
 - Synonym Substitution
 - Contraction Toggling
 - Adverbial Intensity
+- Lexical Specificity
 
 **Syntactic (3):**
 - Acrostic
 - Syntactic Structure Swapping
 - List Ordering
+- Self-Reference-Frequency
 
 **Typographic (8):**
 - Zero-Width Characters
@@ -108,7 +110,6 @@ python mock_data_generator.py
 - Capitalization Anomalies
 - Sentence Length
 - Emoji Flavor
-- (and 2 others) #TODO, clarify
 
 ---
 
