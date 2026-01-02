@@ -14,7 +14,7 @@ from .phase4_evaluation import run_phase4
 from .utils import ensure_results_dir
 
 
-def run_all_phases(resume: bool = True, test_mode: bool = False):
+def run_all_phases(resume: bool = True, test_mode: bool = False, use_flex: bool = False):
     """Run all phases sequentially."""
     ensure_results_dir()
     
@@ -26,27 +26,28 @@ def run_all_phases(resume: bool = True, test_mode: bool = False):
     print("="*60)
     if test_mode:
         print("⚠️  TEST MODE: Reduced API calls for minimal expenses")
-        print()
+    if use_flex:
+        print("⚡ FLEX MODE: Using flex processing with extended timeout (15 minutes)")
     print()
     
     print("Phase 0: Baseline Naturalness Measurement")
     print("-" * 60)
-    run_phase0(resume=resume, test_mode=test_mode)
+    run_phase0(resume=resume, test_mode=test_mode, use_flex=use_flex)
     print()
     
     print("Phase 1: Malicious Prompt Generation")
     print("-" * 60)
-    run_phase1(resume=resume, test_mode=test_mode)
+    run_phase1(resume=resume, test_mode=test_mode, use_flex=use_flex)
     print()
     
     print("Phase 2: Poisoned Helper Execution")
     print("-" * 60)
-    run_phase2(resume=resume, test_mode=test_mode)
+    run_phase2(resume=resume, test_mode=test_mode, use_flex=use_flex)
     print()
     
     print("Phase 3: Decoder Execution")
     print("-" * 60)
-    run_phase3(resume=resume, test_mode=test_mode)
+    run_phase3(resume=resume, test_mode=test_mode, use_flex=use_flex)
     print()
     
     print("Phase 4: Evaluation and Metrics")
@@ -80,28 +81,34 @@ def main():
         action="store_true",
         help="Run in test mode with reduced API calls for minimal expenses",
     )
+    parser.add_argument(
+        "--flex",
+        action="store_true",
+        help="Enable flex processing mode with extended timeout (15 minutes) and service_tier='flex'",
+    )
     
     args = parser.parse_args()
     
     resume = not args.no_resume
     test_mode = args.test_mode
+    use_flex = args.flex
     ensure_results_dir()
     
     if args.phase is not None:
         # Run specific phase
         if args.phase == 0:
-            run_phase0(resume=resume, test_mode=test_mode)
+            run_phase0(resume=resume, test_mode=test_mode, use_flex=use_flex)
         elif args.phase == 1:
-            run_phase1(resume=resume, test_mode=test_mode)
+            run_phase1(resume=resume, test_mode=test_mode, use_flex=use_flex)
         elif args.phase == 2:
-            run_phase2(resume=resume, test_mode=test_mode)
+            run_phase2(resume=resume, test_mode=test_mode, use_flex=use_flex)
         elif args.phase == 3:
-            run_phase3(resume=resume, test_mode=test_mode)
+            run_phase3(resume=resume, test_mode=test_mode, use_flex=use_flex)
         elif args.phase == 4:
             run_phase4(test_mode=test_mode)
     else:
         # Run all phases
-        run_all_phases(resume=resume, test_mode=test_mode)
+        run_all_phases(resume=resume, test_mode=test_mode, use_flex=use_flex)
 
 
 if __name__ == "__main__":

@@ -24,6 +24,7 @@ def run_phase3(
     naturalness_model_name: str = "gpt-5-mini-2025-08-07",
     resume: bool = True,
     test_mode: bool = False,
+    use_flex: bool = False,
 ) -> List[Dict[str, Any]]:
     """
     Run Phase 3: Execute decoder evaluation.
@@ -34,6 +35,7 @@ def run_phase3(
         naturalness_model_name: Model to use for naturalness rating
         resume: If True, skip already completed decodings
         test_mode: If True, use reduced API calls for minimal expenses
+        use_flex: If True, enable flex processing with extended timeout
         
     Returns:
         List of decoder result dictionaries
@@ -53,9 +55,9 @@ def run_phase3(
         raise ValueError("No poisoned responses found. Run Phase 2 first.")
     
     # Initialize models
-    informed_decoder = OpenAIModel(informed_decoder_model_name)
-    naive_decoder = OpenAIModel(naive_decoder_model_name)
-    naturalness_model = OpenAIModel(naturalness_model_name)
+    informed_decoder = OpenAIModel(informed_decoder_model_name, use_flex=use_flex)
+    naive_decoder = OpenAIModel(naive_decoder_model_name, use_flex=use_flex)
+    naturalness_model = OpenAIModel(naturalness_model_name, use_flex=use_flex)
     naturalness_checker = NaturalChecker(naturalness_model)
     success_checker = SuccessChecker()
     

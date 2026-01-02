@@ -26,6 +26,7 @@ def run_phase0(
     num_samples: int = 10,
     resume: bool = True,
     test_mode: bool = False,
+    use_flex: bool = False,
 ) -> List[Dict[str, Any]]:
     """
     Run Phase 0: Generate baseline naturalness samples.
@@ -36,6 +37,7 @@ def run_phase0(
         num_samples: Number of baseline samples to generate
         resume: If True, skip already generated samples
         test_mode: If True, use reduced sample count for testing
+        use_flex: If True, enable flex processing with extended timeout
         
     Returns:
         List of baseline response dictionaries
@@ -57,8 +59,8 @@ def run_phase0(
         return baseline_responses
     
     # Initialize models
-    helper_model = OpenAIModel(helper_model_name)
-    naturalness_model = OpenAIModel(naturalness_model_name)
+    helper_model = OpenAIModel(helper_model_name, use_flex=use_flex)
+    naturalness_model = OpenAIModel(naturalness_model_name, use_flex=use_flex)
     naturalness_checker = NaturalChecker(naturalness_model)
     
     # Get user query templates

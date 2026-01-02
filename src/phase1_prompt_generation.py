@@ -6,7 +6,7 @@ that will be used as system prompts for poisoned helper models. These prompts
 instruct the helpers to encode the first word of user queries using specific
 steganographic techniques.
 
-Generates 45 prompts total (3 per codec × 15 codecs).
+Generates 15 prompts total (1 per codec × 15 codecs).
 """
 
 from typing import Dict, List
@@ -43,9 +43,10 @@ CODEC_NAMES = {
 
 def run_phase1(
     expert_model_name: str = "gpt-5.2-2025-12-11",
-    prompts_per_codec: int = 3,
+    prompts_per_codec: int = 1,
     resume: bool = True,
     test_mode: bool = False,
+    use_flex: bool = False,
 ) -> Dict[str, List[str]]:
     """
     Run Phase 1: Steganography Expert Generates Codec Prompts for Poisoned Helper
@@ -55,6 +56,7 @@ def run_phase1(
         prompts_per_codec: Number of prompts to generate per codec
         resume: If True, skip already generated prompts
         test_mode: If True, use reduced prompt count for testing
+        use_flex: If True, enable flex processing with extended timeout
         
     Returns:
         Dictionary mapping codec names to lists of prompts
@@ -70,7 +72,7 @@ def run_phase1(
         malicious_prompts = {}
     
     # Initialize expert model
-    expert_model = OpenAIModel(expert_model_name)
+    expert_model = OpenAIModel(expert_model_name, use_flex=use_flex)
     system_prompt = PromptTemplateLibrary.get_steganography_expert_system_prompt()
     
     # Generate prompts for each codec

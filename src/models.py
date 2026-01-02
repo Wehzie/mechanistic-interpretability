@@ -60,7 +60,7 @@ class BaseModel(ABC):
 class OpenAIModel(BaseModel):
     """OpenAI API model wrapper."""
     
-    def __init__(self, model_name: str, api_key: Optional[str] = None, project_id: Optional[str] = None):
+    def __init__(self, model_name: str, api_key: Optional[str] = None, project_id: Optional[str] = None, use_flex: bool = False):
         """
         Initialize OpenAI model.
         
@@ -68,20 +68,23 @@ class OpenAIModel(BaseModel):
             model_name: Name of the model (e.g., 'gpt-5.2-2025-12-11')
             api_key: OpenAI API key (defaults to OPENAI_API_KEY env var)
             project_id: OpenAI project ID (optional)
+            use_flex: If True, enable flex processing with extended timeout (15 minutes)
         """
         self.model_name = model_name
         self.api_key = api_key or os.getenv("OPENAI_API_KEY")
         self.project_id = project_id or os.getenv("OPENAI_PROJECT_ID")
+        self.use_flex = use_flex
         
         if not self.api_key:
             raise ValueError("OpenAI API key required. Set OPENAI_API_KEY environment variable.")
         
-        # Configure timeout: 60 seconds for connection, 300 seconds (5 min) for read
+        # Configure timeout: 900 seconds (15 min) for flex mode, 300 seconds (5 min) otherwise
         # This prevents hanging indefinitely on slow API calls
+        timeout = 900.0 if use_flex else 300.0
         self.client = OpenAI(
             api_key=self.api_key,
             project=self.project_id,
-            timeout=300.0,  # 5 minute timeout for read operations
+            timeout=timeout,
         )
     
     def chat(
@@ -136,6 +139,10 @@ class OpenAIModel(BaseModel):
                         params["max_completion_tokens"] = max_tokens
                     else:
                         params["max_tokens"] = max_tokens
+                
+                # Add service_tier="flex" if flex processing is enabled
+                if self.use_flex:
+                    params["service_tier"] = "flex"
                 
                 # Log retry attempts
                 if attempt > 0:

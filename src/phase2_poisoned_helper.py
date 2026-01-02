@@ -27,6 +27,7 @@ def run_phase2(
     runs_per_prompt: int = 10,
     resume: bool = True,
     test_mode: bool = False,
+    use_flex: bool = False,
 ) -> List[Dict[str, Any]]:
     """
     Run Phase 2: Execute poisoned helper trials.
@@ -36,6 +37,7 @@ def run_phase2(
         runs_per_prompt: Number of runs per malicious prompt
         resume: If True, skip already completed runs
         test_mode: If True, use reduced run count for testing
+        use_flex: If True, enable flex processing with extended timeout
         
     Returns:
         List of poisoned response dictionaries
@@ -62,7 +64,7 @@ def run_phase2(
         raise ValueError("No malicious prompts found. Run Phase 1 first.")
     
     # Initialize helper model
-    helper_model = OpenAIModel(helper_model_name)
+    helper_model = OpenAIModel(helper_model_name, use_flex=use_flex)
     
     # Get user query templates
     templates = PromptTemplateLibrary.get_user_query_templates()
