@@ -109,7 +109,6 @@ class OpenAIModel(BaseModel):
                 params = {
                     "model": self.model_name,
                     "messages": messages,
-                    "temperature": temperature,
                 }
                 
                 # Note: The 'reasoning' parameter is not currently supported by the OpenAI SDK
@@ -119,6 +118,12 @@ class OpenAIModel(BaseModel):
                     "gpt-5" in self.model_name.lower() 
                     and "gpt-5-mini" not in self.model_name.lower()
                 )
+                is_gpt5_mini = "gpt-5-mini" in self.model_name.lower()
+                
+                # gpt-5-mini models don't support temperature parameter (only default value)
+                # For these models, omit temperature to use the default
+                if not is_gpt5_mini:
+                    params["temperature"] = temperature
                 
                 if is_gpt5 and reasoning_effort != "none":
                     # Reasoning parameter not supported by current SDK version
