@@ -33,7 +33,7 @@ def run_phase3(
         naive_decoder_model_name: Model to use for naive decoder
         naturalness_model_name: Model to use for naturalness rating
         resume: If True, skip already completed decodings
-        test_mode: If True, test mode (no changes needed, works with fewer responses)
+        test_mode: If True, use reduced API calls for minimal expenses
         
     Returns:
         List of decoder result dictionaries
