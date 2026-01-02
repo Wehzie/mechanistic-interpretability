@@ -76,7 +76,13 @@ class OpenAIModel(BaseModel):
         if not self.api_key:
             raise ValueError("OpenAI API key required. Set OPENAI_API_KEY environment variable.")
         
-        self.client = OpenAI(api_key=self.api_key, project=self.project_id)
+        # Configure timeout: 60 seconds for connection, 300 seconds (5 min) for read
+        # This prevents hanging indefinitely on slow API calls
+        self.client = OpenAI(
+            api_key=self.api_key,
+            project=self.project_id,
+            timeout=300.0,  # 5 minute timeout for read operations
+        )
     
     def chat(
         self,
@@ -109,19 +115,35 @@ class OpenAIModel(BaseModel):
                 # Note: The 'reasoning' parameter is not currently supported by the OpenAI SDK
                 # Even for GPT-5 models, we skip it since the SDK doesn't accept it
                 # If reasoning_effort is not "none", we log a warning but proceed without it
-                if (
+                is_gpt5 = (
                     "gpt-5" in self.model_name.lower() 
                     and "gpt-5-mini" not in self.model_name.lower()
-                    and reasoning_effort != "none"
-                ):
+                )
+                
+                if is_gpt5 and reasoning_effort != "none":
                     # Reasoning parameter not supported by current SDK version
                     # Temperature may not work with reasoning models, but we try anyway
                     pass
                 
+                # GPT-5 models use max_completion_tokens instead of max_tokens
                 if max_tokens is not None:
-                    params["max_tokens"] = max_tokens
+                    if is_gpt5:
+                        params["max_completion_tokens"] = max_tokens
+                    else:
+                        params["max_tokens"] = max_tokens
                 
+                # Log retry attempts
+                if attempt > 0:
+                    print(f"  Retry attempt {attempt + 1}/{max_retries} for {self.model_name}")
+                
+                call_start = time.time()
                 response = self.client.chat.completions.create(**params)
+                call_duration = time.time() - call_start
+                
+                # Warn if call took longer than 30 seconds
+                if call_duration > 30:
+                    print(f"  ⚠ API call took {call_duration:.1f}s (unusually slow)")
+                
                 return response.choices[0].message.content.strip()
             except (TypeError, AttributeError) as e:
                 # Handle case where a parameter is not supported
@@ -133,18 +155,28 @@ class OpenAIModel(BaseModel):
                         pass
                     if attempt < max_retries - 1:
                         wait_time = 2 ** attempt
+                        print(f"  ⚠ Parameter error, retrying in {wait_time}s: {e}")
                         time.sleep(wait_time)
                         continue
                 raise
             except openai.RateLimitError as e:
                 if attempt < max_retries - 1:
                     wait_time = 2 ** attempt  # Exponential backoff
+                    print(f"  ⚠ Rate limit hit, retrying in {wait_time}s...")
+                    time.sleep(wait_time)
+                    continue
+                raise
+            except openai.APITimeoutError as e:
+                if attempt < max_retries - 1:
+                    wait_time = 2 ** attempt
+                    print(f"  ⚠ API timeout, retrying in {wait_time}s...")
                     time.sleep(wait_time)
                     continue
                 raise
             except Exception as e:
                 if attempt < max_retries - 1:
                     wait_time = 2 ** attempt
+                    print(f"  ⚠ Error (attempt {attempt + 1}/{max_retries}), retrying in {wait_time}s: {type(e).__name__}: {e}")
                     time.sleep(wait_time)
                     continue
                 raise

@@ -5,6 +5,7 @@ Run 450 poisoned helper trials (10 per prompt) with temperature distribution.
 """
 
 import random
+import time
 from typing import List, Dict, Any
 from tqdm import tqdm
 
@@ -135,11 +136,51 @@ def run_phase2(
                         "prompt": prompt_idx,
                         "run": run_id,
                         "temp": temperature,
+                        "status": "preparing",
                     }
                 )
                 
                 try:
-                    response = helper_model.chat(messages, temperature=temperature)
+                    # Log that we're about to make the API call
+                    start_time = time.time()
+                    pbar.write(
+                        f"Calling API for {prompt_id}, run {run_id} "
+                        f"(temp={temperature}, codec={codec_name[:20]})..."
+                    )
+                    
+                    # Update status to show we're calling the API
+                    pbar.set_postfix(
+                        {
+                            "codec": codec_name[:15],
+                            "prompt": prompt_idx,
+                            "run": run_id,
+                            "temp": temperature,
+                            "status": "calling API...",
+                        }
+                    )
+                    
+                    # Limit response length to prevent extremely long generations
+                    # 2000 tokens should be sufficient for most responses
+                    response = helper_model.chat(
+                        messages, temperature=temperature, max_tokens=2000
+                    )
+                    
+                    elapsed = time.time() - start_time
+                    pbar.write(
+                        f"✓ Received response for {prompt_id}, run {run_id} "
+                        f"(took {elapsed:.1f}s)"
+                    )
+                    
+                    # Update status to show we got the response
+                    pbar.set_postfix(
+                        {
+                            "codec": codec_name[:15],
+                            "prompt": prompt_idx,
+                            "run": run_id,
+                            "temp": temperature,
+                            "status": "processing",
+                        }
+                    )
                     
                     poisoned_response = {
                         "prompt_id": prompt_id,
