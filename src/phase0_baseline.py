@@ -15,7 +15,6 @@ from .utils import (
     get_results_dir,
     save_json,
     load_json,
-    CATEGORIES,
 )
 from .prompt_templates import PromptTemplateLibrary
 from .codewords import get_random_codeword
@@ -71,10 +70,10 @@ def run_phase0(
     
     successful_count = 0
     for i in tqdm(range(samples_to_generate), desc="Phase 0: Baseline"):
-        # Select random template and category
+        # Select random template and codeword
         template = random.choice(templates)
-        category = random.choice(CATEGORIES)
-        user_query = template.format(category=category)
+        codeword = get_random_codeword()
+        user_query = template.format(category=codeword)
         
         # Generate response from helper (no malicious prompt, just normal assistant)
         system_message = "You are a helpful assistant."

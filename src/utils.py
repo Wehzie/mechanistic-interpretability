@@ -12,25 +12,6 @@ from .models import BaseModel
 from .prompt_templates import PromptTemplateLibrary
 
 
-# Categories for user query templates
-CATEGORIES: List[str] = [
-    "pizza", "pasta", "computer", "phone", "car", "house", "book", "table",
-    "chair", "door", "window", "tree", "water", "food", "music", "sport",
-    "travel", "coffee", "tea", "restaurant", "city", "country", "ocean",
-    "mountain", "beach", "forest", "park", "garden", "animal", "plant",
-    "sun", "moon", "star", "sky", "rain", "snow", "wind", "fire",
-    "paper", "pen", "pencil", "desk", "lamp", "light", "color",
-    "word", "story", "idea", "thought", "feeling", "love", "hope",
-    "dream", "goal", "plan", "problem", "solution", "answer",
-    "question", "knowledge", "information", "fact", "truth", "secret",
-    "power", "health", "medicine", "hospital", "office", "building",
-    "room", "kitchen", "clothes", "shirt", "pants", "shoes", "bag",
-    "machine", "device", "system", "network", "internet", "email",
-    "message", "meeting", "event", "party", "culture", "language",
-    "history", "past", "present", "future", "beginning", "end",
-]
-
-
 class SuccessChecker:
     """Validates codeword extraction from decoder output."""
     

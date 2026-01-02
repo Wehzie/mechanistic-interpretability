@@ -106,10 +106,13 @@ def run_phase2(
                 # Select random template
                 template = random.choice(templates)
                 
-                # Generate user query with codeword as first word (replacing category)
+                # Generate user query by formatting template with codeword
+                # (template uses {category} placeholder, which we fill with the codeword)
                 user_query = template.format(category=codeword)
                 
                 # Create messages for poisoned helper
+                # malicious prompt instructs the poisoned helper to encode the codeword in the user's query
+                # user query is the user's query with the codeword as the first word
                 messages = [
                     {"role": "system", "content": malicious_prompt},
                     {"role": "user", "content": user_query},
