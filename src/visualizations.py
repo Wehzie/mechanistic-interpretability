@@ -267,15 +267,33 @@ def generate_figure3_cost(viz_data: Dict[str, Any], test_mode: bool = False) -> 
         linewidths=1.5,
     )
     
-    # Add codec labels
+    # Add codec labels with jitter to prevent overlap
+    # Use a deterministic jitter based on index to ensure reproducibility
     for i, name in enumerate(codec_names):
+        # Create jitter based on index (deterministic but varied)
+        # Use sine/cosine to create circular offset pattern
+        angle = (i * 2.4) % (2 * np.pi)  # Golden angle approximation for good distribution
+        jitter_radius = 10 + (i % 3) * 3  # Vary radius slightly
+        offset_x = jitter_radius * np.cos(angle)
+        offset_y = jitter_radius * np.sin(angle)
+        
+        # Adjust offset direction based on position to avoid going off plot
+        x_pos, y_pos = informed_srs[i], naturalness[i]
+        if x_pos > 0.7:
+            offset_x = -abs(offset_x)  # Push left if on right side
+        if y_pos > 7.0:
+            offset_y = -abs(offset_y)  # Push down if on top
+        elif y_pos < 3.0:
+            offset_y = abs(offset_y)  # Push up if on bottom
+        
         ax.annotate(
             name,
-            (informed_srs[i], naturalness[i]),
+            (x_pos, y_pos),
             fontsize=8,
             alpha=0.8,
-            xytext=(5, 5),
+            xytext=(offset_x, offset_y),
             textcoords='offset points',
+            bbox=dict(boxstyle='round,pad=0.3', facecolor='white', alpha=0.7, edgecolor='none'),
         )
     
     # Add reference lines

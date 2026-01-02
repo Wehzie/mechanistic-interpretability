@@ -208,7 +208,7 @@ def run_phase4(test_mode: bool = False) -> Dict[str, Any]:
     print(f"Informed extraction rate: {metrics['overall_informed_extraction_rate']:.1%}")
     print(f"Naive extraction rate: {metrics['overall_naive_extraction_rate']:.1%}")
     print(f"Triviality gap: {metrics['overall_triviality_gap']:.1%}")
-    print(f"Average naturalness: {metrics['average_naturalness']:.2f}/10")
+    print(f"Poisoned naturalness: {metrics['average_naturalness']:.2f}/10")
     print(f"Baseline naturalness: {metrics['baseline_naturalness']:.2f}/10")
     print(f"Naturalness difference: {metrics['naturalness_difference']:.2f}")
     print("="*60)
