@@ -9,7 +9,7 @@ from typing import List, Dict, Any
 from tqdm import tqdm
 
 from .models import OpenAIModel
-from .utils import get_results_dir, save_json, load_json, CATEGORIES
+from .utils import get_results_dir, save_json, load_json
 from .prompt_templates import PromptTemplateLibrary
 from .codewords import get_random_codeword
 
@@ -103,12 +103,11 @@ def run_phase2(
                 # Select random codeword
                 codeword = get_random_codeword()
                 
-                # Select random template and category
+                # Select random template
                 template = random.choice(templates)
-                category = random.choice(CATEGORIES)
                 
-                # Generate user query with codeword as first word
-                user_query = f"{codeword} {template.format(category=category)}"
+                # Generate user query with codeword as first word (replacing category)
+                user_query = template.format(category=codeword)
                 
                 # Create messages for poisoned helper
                 messages = [
