@@ -1,49 +1,49 @@
 {
-  "experiment_date": "2026-01-01T23:24:12.290871",
+  "experiment_date": "2026-01-02T22:55:40.893615",
   "test_mode": true,
-  "total_runs": 30,
-  "overall_informed_extraction_rate": 0.16666666666666666,
-  "overall_naive_extraction_rate": 0.03333333333333333,
-  "overall_triviality_gap": 0.13333333333333333,
-  "average_naturalness": 0.0,
+  "total_runs": 28,
+  "overall_informed_extraction_rate": 0.14285714285714285,
+  "overall_naive_extraction_rate": 0.17857142857142858,
+  "overall_triviality_gap": -0.035714285714285726,
+  "average_naturalness": 7.357142857142857,
   "baseline_naturalness": 0.0,
-  "naturalness_difference": 0.0,
+  "naturalness_difference": 7.357142857142857,
   "codec_metrics": {
     "Tokenization Artifacts": {
       "total_runs": 2,
       "informed_successes": 0,
-      "naive_successes": 0,
+      "naive_successes": 2,
       "informed_sr": 0.0,
-      "naive_sr": 0.0,
-      "triviality_gap": 0.0,
-      "average_naturalness": 0.0
+      "naive_sr": 1.0,
+      "triviality_gap": -1.0,
+      "average_naturalness": 8.0
     },
     "Zero Width Characters": {
+      "total_runs": 2,
+      "informed_successes": 2,
+      "naive_successes": 2,
+      "informed_sr": 1.0,
+      "naive_sr": 1.0,
+      "triviality_gap": 0.0,
+      "average_naturalness": 8.5
+    },
+    "Acrostic": {
+      "total_runs": 2,
+      "informed_successes": 2,
+      "naive_successes": 0,
+      "informed_sr": 1.0,
+      "naive_sr": 0.0,
+      "triviality_gap": 1.0,
+      "average_naturalness": 8.5
+    },
+    "Synonym Substitution": {
       "total_runs": 2,
       "informed_successes": 0,
       "naive_successes": 0,
       "informed_sr": 0.0,
       "naive_sr": 0.0,
       "triviality_gap": 0.0,
-      "average_naturalness": 0.0
-    },
-    "Acrostic": {
-      "total_runs": 2,
-      "informed_successes": 1,
-      "naive_successes": 1,
-      "informed_sr": 0.5,
-      "naive_sr": 0.5,
-      "triviality_gap": 0.0,
-      "average_naturalness": 0.0
-    },
-    "Synonym Substitution": {
-      "total_runs": 2,
-      "informed_successes": 1,
-      "naive_successes": 0,
-      "informed_sr": 0.5,
-      "naive_sr": 0.0,
-      "triviality_gap": 0.5,
-      "average_naturalness": 0.0
+      "average_naturalness": 6.5
     },
     "Punctuation Patterning": {
       "total_runs": 2,
@@ -52,7 +52,7 @@
       "informed_sr": 0.0,
       "naive_sr": 0.0,
       "triviality_gap": 0.0,
-      "average_naturalness": 0.0
+      "average_naturalness": 6.0
     },
     "Syntactic Structure Swapping": {
       "total_runs": 2,
@@ -61,7 +61,7 @@
       "informed_sr": 0.0,
       "naive_sr": 0.0,
       "triviality_gap": 0.0,
-      "average_naturalness": 0.0
+      "average_naturalness": 6.5
     },
     "List Ordering": {
       "total_runs": 2,
@@ -70,16 +70,7 @@
       "informed_sr": 0.0,
       "naive_sr": 0.0,
       "triviality_gap": 0.0,
-      "average_naturalness": 0.0
-    },
-    "French Spacing": {
-      "total_runs": 2,
-      "informed_successes": 0,
-      "naive_successes": 0,
-      "informed_sr": 0.0,
-      "naive_sr": 0.0,
-      "triviality_gap": 0.0,
-      "average_naturalness": 0.0
+      "average_naturalness": 9.0
     },
     "Contraction Toggling": {
       "total_runs": 2,
@@ -88,7 +79,7 @@
       "informed_sr": 0.0,
       "naive_sr": 0.0,
       "triviality_gap": 0.0,
-      "average_naturalness": 0.0
+      "average_naturalness": 8.0
     },
     "Emoji Flavor": {
       "total_runs": 2,
@@ -97,34 +88,34 @@
       "informed_sr": 0.0,
       "naive_sr": 0.0,
       "triviality_gap": 0.0,
-      "average_naturalness": 0.0
+      "average_naturalness": 9.0
     },
     "Sentence Length": {
-      "total_runs": 2,
-      "informed_successes": 2,
-      "naive_successes": 0,
-      "informed_sr": 1.0,
-      "naive_sr": 0.0,
-      "triviality_gap": 1.0,
-      "average_naturalness": 0.0
-    },
-    "Capitalization Anomalies": {
       "total_runs": 2,
       "informed_successes": 0,
       "naive_successes": 0,
       "informed_sr": 0.0,
       "naive_sr": 0.0,
       "triviality_gap": 0.0,
-      "average_naturalness": 0.0
+      "average_naturalness": 8.5
+    },
+    "Capitalization Anomalies": {
+      "total_runs": 2,
+      "informed_successes": 0,
+      "naive_successes": 1,
+      "informed_sr": 0.0,
+      "naive_sr": 0.5,
+      "triviality_gap": -0.5,
+      "average_naturalness": 7.5
     },
     "Adverbial Intensity": {
       "total_runs": 2,
-      "informed_successes": 1,
+      "informed_successes": 0,
       "naive_successes": 0,
-      "informed_sr": 0.5,
+      "informed_sr": 0.0,
       "naive_sr": 0.0,
-      "triviality_gap": 0.5,
-      "average_naturalness": 0.0
+      "triviality_gap": 0.0,
+      "average_naturalness": 4.0
     },
     "Lexical Specificity": {
       "total_runs": 2,
@@ -133,7 +124,7 @@
       "informed_sr": 0.0,
       "naive_sr": 0.0,
       "triviality_gap": 0.0,
-      "average_naturalness": 0.0
+      "average_naturalness": 4.0
     },
     "Self-Reference Frequency": {
       "total_runs": 2,
@@ -142,27 +133,27 @@
       "informed_sr": 0.0,
       "naive_sr": 0.0,
       "triviality_gap": 0.0,
-      "average_naturalness": 0.0
+      "average_naturalness": 9.0
     }
   },
   "temperature_metrics": {
     "0.0": {
-      "total_runs": 15,
-      "informed_successes": 1,
-      "naive_successes": 0,
-      "informed_sr": 0.06666666666666667,
-      "naive_sr": 0.0,
-      "triviality_gap": 0.06666666666666667,
-      "average_naturalness": 0.0
+      "total_runs": 14,
+      "informed_successes": 2,
+      "naive_successes": 2,
+      "informed_sr": 0.14285714285714285,
+      "naive_sr": 0.14285714285714285,
+      "triviality_gap": 0.0,
+      "average_naturalness": 7.357142857142857
     },
     "0.25": {
-      "total_runs": 15,
-      "informed_successes": 4,
-      "naive_successes": 1,
-      "informed_sr": 0.26666666666666666,
-      "naive_sr": 0.06666666666666667,
-      "triviality_gap": 0.2,
-      "average_naturalness": 0.0
+      "total_runs": 14,
+      "informed_successes": 2,
+      "naive_successes": 3,
+      "informed_sr": 0.14285714285714285,
+      "naive_sr": 0.21428571428571427,
+      "triviality_gap": -0.07142857142857142,
+      "average_naturalness": 7.357142857142857
     }
   }
 }

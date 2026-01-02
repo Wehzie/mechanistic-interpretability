@@ -1,0 +1,195 @@
+{
+  "experiment_date": "2026-01-02T23:52:20.509827",
+  "test_mode": false,
+  "total_runs": 148,
+  "overall_informed_extraction_rate": 0.20945945945945946,
+  "overall_naive_extraction_rate": 0.13513513513513514,
+  "overall_triviality_gap": 0.07432432432432431,
+  "average_naturalness": 7.804054054054054,
+  "baseline_naturalness": 9.2,
+  "naturalness_difference": -1.395945945945945,
+  "codec_metrics": {
+    "Tokenization Artifacts": {
+      "total_runs": 10,
+      "informed_successes": 10,
+      "naive_successes": 8,
+      "informed_sr": 1.0,
+      "naive_sr": 0.8,
+      "triviality_gap": 0.19999999999999996,
+      "average_naturalness": 8.3
+    },
+    "Zero Width Characters": {
+      "total_runs": 9,
+      "informed_successes": 0,
+      "naive_successes": 1,
+      "informed_sr": 0.0,
+      "naive_sr": 0.1111111111111111,
+      "triviality_gap": -0.1111111111111111,
+      "average_naturalness": 9.11111111111111
+    },
+    "Acrostic": {
+      "total_runs": 10,
+      "informed_successes": 10,
+      "naive_successes": 10,
+      "informed_sr": 1.0,
+      "naive_sr": 1.0,
+      "triviality_gap": 0.0,
+      "average_naturalness": 8.7
+    },
+    "Synonym Substitution": {
+      "total_runs": 10,
+      "informed_successes": 0,
+      "naive_successes": 0,
+      "informed_sr": 0.0,
+      "naive_sr": 0.0,
+      "triviality_gap": 0.0,
+      "average_naturalness": 5.8
+    },
+    "Punctuation Patterning": {
+      "total_runs": 10,
+      "informed_successes": 3,
+      "naive_successes": 1,
+      "informed_sr": 0.3,
+      "naive_sr": 0.1,
+      "triviality_gap": 0.19999999999999998,
+      "average_naturalness": 5.8
+    },
+    "Syntactic Structure Swapping": {
+      "total_runs": 10,
+      "informed_successes": 0,
+      "naive_successes": 0,
+      "informed_sr": 0.0,
+      "naive_sr": 0.0,
+      "triviality_gap": 0.0,
+      "average_naturalness": 8.2
+    },
+    "List Ordering": {
+      "total_runs": 10,
+      "informed_successes": 1,
+      "naive_successes": 0,
+      "informed_sr": 0.1,
+      "naive_sr": 0.0,
+      "triviality_gap": 0.1,
+      "average_naturalness": 8.9
+    },
+    "French Spacing": {
+      "total_runs": 9,
+      "informed_successes": 0,
+      "naive_successes": 0,
+      "informed_sr": 0.0,
+      "naive_sr": 0.0,
+      "triviality_gap": 0.0,
+      "average_naturalness": 7.666666666666667
+    },
+    "Contraction Toggling": {
+      "total_runs": 10,
+      "informed_successes": 2,
+      "naive_successes": 0,
+      "informed_sr": 0.2,
+      "naive_sr": 0.0,
+      "triviality_gap": 0.2,
+      "average_naturalness": 7.6
+    },
+    "Emoji Flavor": {
+      "total_runs": 10,
+      "informed_successes": 3,
+      "naive_successes": 0,
+      "informed_sr": 0.3,
+      "naive_sr": 0.0,
+      "triviality_gap": 0.3,
+      "average_naturalness": 8.9
+    },
+    "Sentence Length": {
+      "total_runs": 10,
+      "informed_successes": 0,
+      "naive_successes": 0,
+      "informed_sr": 0.0,
+      "naive_sr": 0.0,
+      "triviality_gap": 0.0,
+      "average_naturalness": 7.9
+    },
+    "Capitalization Anomalies": {
+      "total_runs": 10,
+      "informed_successes": 1,
+      "naive_successes": 0,
+      "informed_sr": 0.1,
+      "naive_sr": 0.0,
+      "triviality_gap": 0.1,
+      "average_naturalness": 8.1
+    },
+    "Adverbial Intensity": {
+      "total_runs": 10,
+      "informed_successes": 0,
+      "naive_successes": 0,
+      "informed_sr": 0.0,
+      "naive_sr": 0.0,
+      "triviality_gap": 0.0,
+      "average_naturalness": 5.3
+    },
+    "Lexical Specificity": {
+      "total_runs": 10,
+      "informed_successes": 0,
+      "naive_successes": 0,
+      "informed_sr": 0.0,
+      "naive_sr": 0.0,
+      "triviality_gap": 0.0,
+      "average_naturalness": 8.8
+    },
+    "Self-Reference Frequency": {
+      "total_runs": 10,
+      "informed_successes": 1,
+      "naive_successes": 0,
+      "informed_sr": 0.1,
+      "naive_sr": 0.0,
+      "triviality_gap": 0.1,
+      "average_naturalness": 8.1
+    }
+  },
+  "temperature_metrics": {
+    "0.0": {
+      "total_runs": 30,
+      "informed_successes": 6,
+      "naive_successes": 4,
+      "informed_sr": 0.2,
+      "naive_sr": 0.13333333333333333,
+      "triviality_gap": 0.06666666666666668,
+      "average_naturalness": 7.566666666666666
+    },
+    "0.25": {
+      "total_runs": 30,
+      "informed_successes": 9,
+      "naive_successes": 4,
+      "informed_sr": 0.3,
+      "naive_sr": 0.13333333333333333,
+      "triviality_gap": 0.16666666666666666,
+      "average_naturalness": 8.033333333333333
+    },
+    "0.5": {
+      "total_runs": 30,
+      "informed_successes": 5,
+      "naive_successes": 4,
+      "informed_sr": 0.16666666666666666,
+      "naive_sr": 0.13333333333333333,
+      "triviality_gap": 0.033333333333333326,
+      "average_naturalness": 7.8
+    },
+    "0.75": {
+      "total_runs": 29,
+      "informed_successes": 5,
+      "naive_successes": 3,
+      "informed_sr": 0.1724137931034483,
+      "naive_sr": 0.10344827586206896,
+      "triviality_gap": 0.06896551724137932,
+      "average_naturalness": 7.655172413793103
+    },
+    "1.0": {
+      "total_runs": 29,
+      "informed_successes": 6,
+      "naive_successes": 5,
+      "informed_sr": 0.20689655172413793,
+      "naive_sr": 0.1724137931034483,
+      "triviality_gap": 0.03448275862068964,
+      "average_naturalness": 7.9655172413793105
+    }
+  }
+}

@@ -92,6 +92,18 @@ def run_phase3(
         malicious_prompt = response_data.get("malicious_prompt")
         
         if not all([prompt_id, run_id is not None, codeword, poisoned_response, malicious_prompt]):
+            missing_fields = []
+            if not prompt_id:
+                missing_fields.append("prompt_id")
+            if run_id is None:
+                missing_fields.append("run_id")
+            if not codeword:
+                missing_fields.append("codeword")
+            if not poisoned_response:
+                missing_fields.append("response")
+            if not malicious_prompt:
+                missing_fields.append("malicious_prompt")
+            print(f"Skipping {prompt_id}, run {run_id}: missing required fields: {', '.join(missing_fields)}")
             continue
         
         try:

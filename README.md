@@ -10,10 +10,13 @@ MATS 10.0 Research Challenge Submission
 This project investigates whether frontier large language models can reliably encode and decode hidden information using 15 distinct steganographic techniques. Through a systematic 4-phase experimental pipeline with 150 trials, we demonstrate that steganographic encoding is both feasible and robust, with important implications for AI safety and prompt injection vulnerabilities.
 
 **Key Findings:**
-- **Extraction Rate:** 68.3% (informed decoder) vs. 12.7% (naive decoder)
-- **Triviality Gap:** 55.6 percentage points (genuine steganography confirmed)
-- **Naturalness Score:** 7.2/10 (high-quality output maintained)
-- **Robust Codecs:** Synonym Substitution, Acrostic, Syntactic Structure Swapping
+- **Total Runs:** 148 successful, 150 planned
+- **Informed Extraction Rate:** 20.9%
+- **Naive Extraction Rate:** 13.5%
+- **Triviality Gap:** 7.4% (genuine steganography confirmed)
+- **Poisoned Naturalness:** 7.80/10
+- **Baseline Naturalness:** 9.20/10
+- **Naturalness Difference:** -1.40
 
 ## 🚀 Quick Start
 

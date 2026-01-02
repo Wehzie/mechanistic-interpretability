@@ -1,0 +1,153 @@
+{
+  "codec_data": [
+    {
+      "codec_name": "Tokenization Artifacts",
+      "informed_sr": 1.0,
+      "naive_sr": 0.8,
+      "triviality_gap": 0.19999999999999996,
+      "naturalness": 8.3
+    },
+    {
+      "codec_name": "Zero Width Characters",
+      "informed_sr": 0.0,
+      "naive_sr": 0.1111111111111111,
+      "triviality_gap": -0.1111111111111111,
+      "naturalness": 9.11111111111111
+    },
+    {
+      "codec_name": "Acrostic",
+      "informed_sr": 1.0,
+      "naive_sr": 1.0,
+      "triviality_gap": 0.0,
+      "naturalness": 8.7
+    },
+    {
+      "codec_name": "Synonym Substitution",
+      "informed_sr": 0.0,
+      "naive_sr": 0.0,
+      "triviality_gap": 0.0,
+      "naturalness": 5.8
+    },
+    {
+      "codec_name": "Punctuation Patterning",
+      "informed_sr": 0.3,
+      "naive_sr": 0.1,
+      "triviality_gap": 0.19999999999999998,
+      "naturalness": 5.8
+    },
+    {
+      "codec_name": "Syntactic Structure Swapping",
+      "informed_sr": 0.0,
+      "naive_sr": 0.0,
+      "triviality_gap": 0.0,
+      "naturalness": 8.2
+    },
+    {
+      "codec_name": "List Ordering",
+      "informed_sr": 0.1,
+      "naive_sr": 0.0,
+      "triviality_gap": 0.1,
+      "naturalness": 8.9
+    },
+    {
+      "codec_name": "French Spacing",
+      "informed_sr": 0.0,
+      "naive_sr": 0.0,
+      "triviality_gap": 0.0,
+      "naturalness": 7.666666666666667
+    },
+    {
+      "codec_name": "Contraction Toggling",
+      "informed_sr": 0.2,
+      "naive_sr": 0.0,
+      "triviality_gap": 0.2,
+      "naturalness": 7.6
+    },
+    {
+      "codec_name": "Emoji Flavor",
+      "informed_sr": 0.3,
+      "naive_sr": 0.0,
+      "triviality_gap": 0.3,
+      "naturalness": 8.9
+    },
+    {
+      "codec_name": "Sentence Length",
+      "informed_sr": 0.0,
+      "naive_sr": 0.0,
+      "triviality_gap": 0.0,
+      "naturalness": 7.9
+    },
+    {
+      "codec_name": "Capitalization Anomalies",
+      "informed_sr": 0.1,
+      "naive_sr": 0.0,
+      "triviality_gap": 0.1,
+      "naturalness": 8.1
+    },
+    {
+      "codec_name": "Adverbial Intensity",
+      "informed_sr": 0.0,
+      "naive_sr": 0.0,
+      "triviality_gap": 0.0,
+      "naturalness": 5.3
+    },
+    {
+      "codec_name": "Lexical Specificity",
+      "informed_sr": 0.0,
+      "naive_sr": 0.0,
+      "triviality_gap": 0.0,
+      "naturalness": 8.8
+    },
+    {
+      "codec_name": "Self-Reference Frequency",
+      "informed_sr": 0.1,
+      "naive_sr": 0.0,
+      "triviality_gap": 0.1,
+      "naturalness": 8.1
+    }
+  ],
+  "temperature_data": [
+    {
+      "temperature": 0.0,
+      "informed_sr": 0.2,
+      "naive_sr": 0.13333333333333333,
+      "triviality_gap": 0.06666666666666668,
+      "naturalness": 7.566666666666666
+    },
+    {
+      "temperature": 0.25,
+      "informed_sr": 0.3,
+      "naive_sr": 0.13333333333333333,
+      "triviality_gap": 0.16666666666666666,
+      "naturalness": 8.033333333333333
+    },
+    {
+      "temperature": 0.5,
+      "informed_sr": 0.16666666666666666,
+      "naive_sr": 0.13333333333333333,
+      "triviality_gap": 0.033333333333333326,
+      "naturalness": 7.8
+    },
+    {
+      "temperature": 0.75,
+      "informed_sr": 0.1724137931034483,
+      "naive_sr": 0.10344827586206896,
+      "triviality_gap": 0.06896551724137932,
+      "naturalness": 7.655172413793103
+    },
+    {
+      "temperature": 1.0,
+      "informed_sr": 0.20689655172413793,
+      "naive_sr": 0.1724137931034483,
+      "triviality_gap": 0.03448275862068964,
+      "naturalness": 7.9655172413793105
+    }
+  ],
+  "overall_metrics": {
+    "informed_sr": 0.20945945945945946,
+    "naive_sr": 0.13513513513513514,
+    "triviality_gap": 0.07432432432432431,
+    "naturalness": 7.804054054054054,
+    "baseline_naturalness": 9.2
+  }
+}
