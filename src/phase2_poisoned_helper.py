@@ -84,7 +84,17 @@ def run_phase2(
         print(f"Phase 2 already complete: {completed_count} runs found")
         return poisoned_responses
     
-    print(f"Generating {total_runs - completed_count} poisoned responses...")
+    # Calculate remaining runs for progress bar
+    remaining_runs = total_runs - completed_count
+    print(f"Generating {remaining_runs} poisoned responses...")
+    
+    # Initialize progress bar
+    pbar = tqdm(
+        total=remaining_runs,
+        desc="Phase 2: Generating poisoned responses",
+        unit="response",
+        ncols=100,
+    )
     
     prompt_counter = 0
     for codec_name, prompts in malicious_prompts.items():
@@ -118,6 +128,16 @@ def run_phase2(
                     {"role": "user", "content": user_query},
                 ]
                 
+                # Update progress bar description with current task
+                pbar.set_postfix(
+                    {
+                        "codec": codec_name[:15],
+                        "prompt": prompt_idx,
+                        "run": run_id,
+                        "temp": temperature,
+                    }
+                )
+                
                 try:
                     response = helper_model.chat(messages, temperature=temperature)
                     
@@ -136,18 +156,26 @@ def run_phase2(
                     poisoned_responses.append(poisoned_response)
                     completed_runs.add((prompt_id, run_id))
                     
+                    # Update progress bar
+                    pbar.update(1)
+                    
                     # Save periodically (every 10 runs)
                     if len(poisoned_responses) % 10 == 0:
                         save_json(poisoned_responses, str(results_file))
                     
                 except Exception as e:
-                    print(f"Error generating response for {prompt_id}, run {run_id}: {e}")
+                    print(f"\nError generating response for {prompt_id}, run {run_id}: {e}")
+                    # Still update progress bar even on error to show we attempted it
+                    pbar.update(1)
                     continue
                 
                 prompt_counter += 1
                 if prompt_counter % 10 == 0:
                     # Save progress
                     save_json(poisoned_responses, str(results_file))
+    
+    # Close progress bar
+    pbar.close()
     
     # Final save
     save_json(poisoned_responses, str(results_file))
