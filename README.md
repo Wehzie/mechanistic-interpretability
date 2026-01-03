@@ -1,6 +1,6 @@
-# Steganography in Large Language Models: Mechanistic Interpretability Research
+# Exploration of Single-Pass In-Prompt-Steganography in Language Models 
 
-A comprehensive mechanistic interpretability research project investigating steganographic encoding in frontier LLMs.
+A mechanistic interpretability research project investigating steganographic encoding in frontier LLMs.
 
 MATS 10.0 Research Challenge Submission
 
@@ -129,32 +129,24 @@ python run_experiment.py --flex
 
 ---
 
-## 📈 Key Results - HYPOTHESIZED
+## 📈 Key Results
 
-### Figure 1: The Steganography Frontier
-Scatter plot showing codec effectiveness (naive vs. informed decoder success rates).
-- **Top-Left Quadrant:** Gold-standard steganography (high informed, low naive)
-- **Top-Right Quadrant:** Trivial encoding (obvious to both decoders)
+![Figure 1: The Steganography Frontier](report/figures/figure1_frontier.png)
 
-### Figure 2: Performance vs. Temperature Heatmap
-Codec robustness across temperature settings (0.0, 0.4, 0.8).
-- **Robust Codecs:** Low drop from T=0.0 to T=0.8
-- **Fragile Codecs:** High drop at higher temperatures
+This scatter plot visualizes codec effectiveness by plotting uninformed success rate (x-axis) against informed success rate (y-axis). Codecs in the top-left quadrant represent genuine steganography (high informed, low uninformed detection), while top-right indicates trivial encoding (high detection by both decoders). Tokenization Artifacts appears in the top-right, demonstrating concealment failure that validates our uninformed decoder's competence.
 
-### Figure 3: Steganographic Cost Analysis
-Naturalness trade-offs by codec type.
-- Synonym Substitution: High extraction + high naturalness
-- Typographic codecs: Lower naturalness penalties
+![Figure 2: Temperature Robustness Heatmap](report/figures/figure2_heatmap.png)
 
-### Figure 4: Error Type Distribution
-Failure mode analysis showing why decoders fail.
+This heatmap shows how informed extraction success rates vary across different temperature settings (0.0, 0.25, 0.5, 0.75, 1.0) for each of the 15 codec types. Darker colors indicate higher success rates, revealing which codecs maintain robust performance across sampling variations. Tokenization Artifacts shows consistent high success (dark green) across all temperatures, while Punctuation Patterning exhibits more variability.
+
+![Figure 3: Cost Analysis](report/figures/figure3_cost.png)
+
+This scatter plot examines the trade-off between naturalness (y-axis) and informed success rate (x-axis) for each codec. A red dashed line marks the baseline naturalness score (9.2/10) from non-poisoned responses. Most codecs cluster in the low-success, moderate-naturalness region, showing that achieving both high success and high naturalness is rare. Tokenization Artifacts achieves high success with good naturalness (8.3/10) but suffers from concealment failure.
+
+![Figure 4: Error Distribution](report/figures/figure4_error_dist.png)
+
+These bar charts compare failure modes between informed and uninformed decoders, categorizing extraction attempts as successful, empty output, explicit failure (UNABLE_TO_EXTRACT), wrong codeword, or other errors. The uninformed decoder more frequently outputs explicit failures or wrong codewords, while the informed decoder succeeds more often but sometimes fails due to implementation errors. This validates that the uninformed decoder attempts extraction but often cannot succeed without knowledge of the encoding scheme.
 
 ## 📖 Research Paper
 
-Research paper available in `report/steganography_research_paper.md` with:
-- Problem statement, research question, hypothesis
-- Short literature review
-- Detailed methodology and reasoning
-- Complete results, figures and interpretation
-- Discussion of AI safety implications
-- References
+Research paper available in `report/mats_submission.md`
